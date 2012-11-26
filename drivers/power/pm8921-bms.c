@@ -1113,7 +1113,6 @@ static int read_soc_params_raw(struct pm8921_bms_chip *chip,
 
 	if (chip->prev_last_good_ocv_raw == 0) {
 		chip->prev_last_good_ocv_raw = raw->last_good_ocv_raw;
-
 		if (chip->shutdown_est_ocv_mv) {
 			raw->last_good_ocv_uv = last_ocv_uv;
 		} else {
@@ -2288,14 +2287,20 @@ static void check_initial_ocv(struct pm8921_bms_chip *chip)
 {
 	int ocv_uv, rc;
 	int batt_temp;
+	int16_t ocv_raw;
+	int usb_chg;
 
 	/*
 	 * Check if a ocv is available in bms hw,
 	 * if not compute it here at boot time and save it
 	 * in the last_ocv_uv.
 	 */
-	ocv_uv = pm8921_bms_read_ocv_from_pmic(chip);
-	if (ocv_uv == 0) {
+
+	ocv_uv = 0;
+	pm_bms_read_output_data(chip, LAST_GOOD_OCV_VALUE, &ocv_raw);
+	usb_chg = usb_chg_plugged_in();
+	rc = convert_vbatt_raw_to_uv(chip, usb_chg, ocv_raw, &ocv_uv);
+	if (rc || ocv_uv == 0) {
 		rc = adc_based_ocv(chip, &ocv_uv);
 		if (rc) {
 			pr_err("failed to read adc based ocv_uv rc = %d\n", rc);
@@ -2372,9 +2377,18 @@ static int set_battery_data(struct pm8921_bms_chip *chip)
 {
 	int64_t battery_id;
 
+<<<<<<< HEAD
 	if (chip->batt_type == BATT_DESAY)
 		goto desay;
 	else if (chip->batt_type == BATT_PALLADIUM)
+=======
+/*
+	if (chip->batt_type == BATT_DESAY)
+		goto desay;
+	else
+*/
+if (chip->batt_type == BATT_PALLADIUM)
+>>>>>>> 113b94c... [WIP] use Sony battery driver
 		goto palladium;
 
 	battery_id = read_battery_id(chip);
@@ -2385,9 +2399,17 @@ static int set_battery_data(struct pm8921_bms_chip *chip)
 
 	if (is_between(PALLADIUM_ID_MIN, PALLADIUM_ID_MAX, battery_id)) {
 		goto palladium;
+<<<<<<< HEAD
 	} else if (is_between(DESAY_5200_ID_MIN, DESAY_5200_ID_MAX,
 				battery_id)) {
 		goto desay;
+=======
+/*
+	} else if (is_between(DESAY_5200_ID_MIN, DESAY_5200_ID_MAX,
+				battery_id)) {
+		goto desay;
+*/
+>>>>>>> 113b94c... [WIP] use Sony battery driver
 	} else {
 		pr_warn("invalid battid, palladium 1500 assumed batt_id %llx\n",
 				battery_id);
@@ -2404,6 +2426,7 @@ palladium:
 		chip->default_rbatt_mohm
 				= palladium_1500_data.default_rbatt_mohm;
 		chip->delta_rbatt_mohm = palladium_1500_data.delta_rbatt_mohm;
+<<<<<<< HEAD
 		return 0;
 desay:
 		chip->fcc = desay_5200_data.fcc;
@@ -2414,6 +2437,20 @@ desay:
 		chip->default_rbatt_mohm = desay_5200_data.default_rbatt_mohm;
 		chip->delta_rbatt_mohm = desay_5200_data.delta_rbatt_mohm;
 		return 0;
+=======
+		return 0;
+/*
+desay:
+		chip->fcc = desay_5200_data.fcc;
+		chip->fcc_temp_lut = desay_5200_data.fcc_temp_lut;
+		chip->pc_temp_ocv_lut = desay_5200_data.pc_temp_ocv_lut;
+		chip->pc_sf_lut = desay_5200_data.pc_sf_lut;
+		chip->rbatt_sf_lut = desay_5200_data.rbatt_sf_lut;
+		chip->default_rbatt_mohm = desay_5200_data.default_rbatt_mohm;
+		chip->delta_rbatt_mohm = desay_5200_data.delta_rbatt_mohm;
+		return 0;
+*/
+>>>>>>> 113b94c... [WIP] use Sony battery driver
 }
 
 enum bms_request_operation {
@@ -2817,6 +2854,7 @@ static ssize_t pm8921_bms_write_i_test(struct device *dev,
 	return strnlen(buf, PAGE_SIZE);
 }
 
+<<<<<<< HEAD
 static ssize_t
 pm8921_bms_set_first_boot(struct device *dev,
 						  struct device_attribute *attr,
@@ -2853,6 +2891,8 @@ out:
 	return strnlen(buf, PAGE_SIZE);
 }
 
+=======
+>>>>>>> 113b94c... [WIP] use Sony battery driver
 static struct device_attribute pm8921_bms_attrs[] = {
 	__ATTR(read_cc, 0444, pm8921_bms_read_cc, NULL),
 	__ATTR(read_last_good_ocv, 0444, pm8921_bms_read_last_good_ocv, NULL),
@@ -2872,7 +2912,10 @@ static struct device_attribute pm8921_bms_attrs[] = {
 	__ATTR(read_soc_original, 0444, pm8921_read_soc_original, NULL),
 	__ATTR(read_soc_expand, 0444, pm8921_read_soc_expand, NULL),
 	__ATTR(i_test, 0644, pm8921_bms_read_i_test, pm8921_bms_write_i_test),
+<<<<<<< HEAD
 	__ATTR(first_boot, 0200, NULL, pm8921_bms_set_first_boot),
+=======
+>>>>>>> 113b94c... [WIP] use Sony battery driver
 };
 
 static int create_sysfs_entries(struct pm8921_bms_chip *chip)

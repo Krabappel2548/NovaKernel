@@ -65,7 +65,10 @@ enum pm8921_usb_debounce_time {
  *				after the battery has been fully charged
  * @resume_soc:		the state of charge (%) to wait for resume charging
  *			after the battery has been fully charged
+<<<<<<< HEAD
  * @delta_soc:		the state of charge (%) to recover charging
+=======
+>>>>>>> 113b94c... [WIP] use Sony battery driver
  * @term_current:	the charger current (mA) at which EOC happens
  * @cool_temp:		the temperature (degC) at which the battery is
  *			considered cool charging current and voltage is reduced.
@@ -110,7 +113,10 @@ enum pm8921_usb_debounce_time {
  *			with the battery terminals shorted. This indicates
  *			resistance of the pads, connectors, battery terminals
  *			and rsense.
+<<<<<<< HEAD
  * @eoc_warm_batt:	enable End Of Charge when battery is warm
+=======
+>>>>>>> 113b94c... [WIP] use Sony battery driver
  */
 struct pm8921_charger_platform_data {
 	struct pm8xxx_charger_core_data	charger_cdata;
@@ -122,7 +128,10 @@ struct pm8921_charger_platform_data {
 	unsigned int			min_voltage;
 	unsigned int			resume_voltage_delta;
 	unsigned int			resume_soc;
+<<<<<<< HEAD
 	unsigned int			delta_soc;
+=======
+>>>>>>> 113b94c... [WIP] use Sony battery driver
 	unsigned int			term_current;
 	int				cold_temp;
 	int				cool_temp;
@@ -150,7 +159,10 @@ struct pm8921_charger_platform_data {
 	enum pm8921_chg_cold_thr	cold_thr;
 	enum pm8921_chg_hot_thr		hot_thr;
 	int				rconn_mohm;
+<<<<<<< HEAD
 	bool				eoc_warm_batt;
+=======
+>>>>>>> 113b94c... [WIP] use Sony battery driver
 };
 
 enum pm8921_charger_source {
