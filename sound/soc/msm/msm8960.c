@@ -365,6 +365,8 @@ static void msm8960_ext_control(struct snd_soc_codec *codec)
 {
 	struct snd_soc_dapm_context *dapm = &codec->dapm;
 
+	mutex_lock(&dapm->codec->mutex);
+
 	pr_debug("%s: msm8960_spk_control = %d", __func__, msm8960_spk_control);
 	if (msm8960_spk_control == MSM8960_SPK_ON) {
 		snd_soc_dapm_enable_pin(dapm, "Ext Spk Bottom Pos");
@@ -379,6 +381,7 @@ static void msm8960_ext_control(struct snd_soc_codec *codec)
 	}
 
 	snd_soc_dapm_sync(dapm);
+	mutex_unlock(&dapm->codec->mutex);
 }
 */
 
@@ -1342,15 +1345,6 @@ static struct snd_soc_dai_link msm8960_dai_common[] = {
 		.no_pcm = 1,
 		.be_id = MSM_BACKEND_DAI_INT_BT_SCO_TX,
 		.be_hw_params_fixup = msm8960_btsco_be_hw_params_fixup,
-	},
-	{
-		.name = "MSM8960 LowLatency",
-		.stream_name = "MultiMedia5",
-		.cpu_dai_name	= "MultiMedia5",
-		.platform_name  = "msm-lowlatency-pcm-dsp",
-		.dynamic = 1,
-		.dsp_link = &fe_media,
-		.be_id = MSM_FRONTEND_DAI_MULTIMEDIA5,
 	},
 	{
 		.name = LPASS_BE_INT_FM_RX,

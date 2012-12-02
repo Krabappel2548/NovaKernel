@@ -84,6 +84,10 @@ struct tabla_micbias_setting {
 	u8 bias2_cfilt_sel;
 	u8 bias3_cfilt_sel;
 	u8 bias4_cfilt_sel;
+	u8 bias1_ext_cap:1;
+	u8 bias2_ext_cap:1;
+	u8 bias3_ext_cap:1;
+	u8 bias4_ext_cap:1;
 };
 
 struct tabla_ocp_setting {
